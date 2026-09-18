@@ -5,8 +5,12 @@ let operator = "";
 let firstNumber = "";
 
 function appendNumber(number) {
+    if (number === "." && currentInput.includes(".")) {
+        return;
+    }
+
     currentInput += number;
-    display.value = currentInput;
+    display.value = firstNumber + operator + currentInput;
 }
 
 function chooseOperator(op) {
@@ -17,6 +21,8 @@ function chooseOperator(op) {
     firstNumber = currentInput;
     operator = op;
     currentInput = "";
+
+    display.value = firstNumber + " " + operator + " ";
 }
 
 function calculate() {
@@ -24,20 +30,21 @@ function calculate() {
         return;
     }
 
-    let secondNumber = currentInput;
+    let num1 = Number(firstNumber);
+    let num2 = Number(currentInput);
     let result;
 
     if (operator === "+") {
-        result = Number(firstNumber) + Number(secondNumber);
+        result = num1 + num2;
     } 
     else if (operator === "-") {
-        result = Number(firstNumber) - Number(secondNumber);
+        result = num1 - num2;
     } 
     else if (operator === "*") {
-        result = Number(firstNumber) * Number(secondNumber);
+        result = num1 * num2;
     } 
     else if (operator === "/") {
-        if (Number(secondNumber) === 0) {
+        if (num2 === 0) {
             display.value = "Error";
             currentInput = "";
             firstNumber = "";
@@ -45,10 +52,11 @@ function calculate() {
             return;
         }
 
-        result = Number(firstNumber) / Number(secondNumber);
+        result = num1 / num2;
     }
 
     display.value = result;
+
     currentInput = result.toString();
     firstNumber = "";
     operator = "";
@@ -59,4 +67,18 @@ function clearDisplay() {
     firstNumber = "";
     operator = "";
     display.value = "";
+}
+
+function deleteNumber() {
+    if (currentInput !== "") {
+        currentInput = currentInput.slice(0, -1);
+        display.value = firstNumber + operator + currentInput;
+    }
+}
+
+function percentage() {
+    if (currentInput !== "") {
+        currentInput = (Number(currentInput) / 100).toString();
+        display.value = firstNumber + operator + currentInput;
+    }
 }
